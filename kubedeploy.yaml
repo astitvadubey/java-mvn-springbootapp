@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loksai-eta-deploy
+  name: astitva-eta-deploy
   labels:
-    app: loksai-eta-deploy-lbl
+    app: astitva-eta-deploy-lbl
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: loksai-eta-app
+      app: astitva-eta-app
   template:
     metadata:
       labels:
-        app: loksai-eta-app
+        app: astitva-eta-app
     spec:
       containers:
-      - name: loksai-eta-container
-        image: loksaieta/sa-mywebapp:latest
+      - name: astitva-eta-container
+        image: astitva911/application-img1.0
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: loksai-eta-np-service
+  name: astitva-eta-np-service
   labels:
-    app: loksai-eta-np-app
+    app: astitva-eta-np-app
 spec:
   selector:
-    app: loksai-eta-deploy-lbl
+    app: astitva-eta-deploy-lbl
 
   type: NodePort
   ports:
