@@ -1,37 +1,39 @@
+---
+# Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: astitva-eta-deploy
   labels:
-    app: astitva-eta-deploy-lbl
+    app: astitva-eta-app  # Match labels used in selector & Service
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: astitva-eta-app
+      app: astitva-eta-app  # Must match pod template labels
   template:
     metadata:
       labels:
-        app: astitva-eta-app
+        app: astitva-eta-app  # Pod labels (used by Service selector)
     spec:
       containers:
       - name: astitva-eta-container
-        image: astitva911/application-img1.0
+        image: astitva911/application-img1.0:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8080  # Matches Service's targetPort
 ---
+# NodePort Service
 apiVersion: v1
 kind: Service
 metadata:
   name: astitva-eta-np-service
   labels:
-    app: astitva-eta-np-app
+    app: astitva-eta-app  # Optional: Align with Deployment labels
 spec:
   selector:
-    app: astitva-eta-deploy-lbl
-
+    app: astitva-eta-app  # Corrected: Must match pod labels from Deployment
   type: NodePort
   ports:
-  - nodePort: 31028
-    port: 8080
-    targetPort: 8080
+  - nodePort: 31028  # Valid range: 30000-32767
+    port: 8080       # Service port (accessed internally)
+    targetPort: 8080 # Matches containerPort in Deployment
